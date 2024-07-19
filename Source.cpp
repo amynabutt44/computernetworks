@@ -1,875 +1,789 @@
-#include <iostream>
-#include <string>
+#include<iostream>
 #include <vector>
-# include <algorithm>
 using namespace std;
-bool binarychecker(string input)
+void NRZ(string binaryData)
 {
-    for (int i = 0; i < input.size(); i++)
-    {
-        if (input[i] != '0' && input[i] != '1')
-        {
-            return false;
-        }
-    }
-    return true;
-
-}
-// task 1
-bool oneBiterrorUisngParityBit(string input, int choice)
-{
-    cout << "                                          one bit parity dedection                     ";
+    cout << " -------------------------------------------------------------";
     cout << endl;
-    int count = 0;
-    if (choice == 1)
+    cout << " binary data is " << endl;
+    for (int i = 0; i < binaryData.length(); i++)
     {
-        cout << "                             even parity                    ";
-        cout << endl;
-        for (int i = 0; i < input.size() - 1; i++)
-        {
-            if (input[i] == '1')
-            {
-                count++;
-            }
-
-        }
-        if (count % 2 == 0 && input[input.size() - 1] == '0')
-        {
-            return true;
-        }
-        else if (count % 2 != 0 && input[input.size() - 1] == '1')
-        {
-            return true;
-        }
-        else return false;
-
+        cout << " " << binaryData[i] << " ";
 
     }
-    else if(choice ==2)
-    {
-        cout << "                                       odd parity                                    ";
-        cout << endl;
-        for (int i = 0; i < input.size() - 1; i++)
-        {
-            if (input[i] == '1')
-            {
-                count++;
-            }
-
-        }
-        if (count % 2 == 0 && input[input.size() - 1] == '1')
-        {
-            return true;
-        }
-        else if (count % 2 != 0 && input[input.size() - 1] == '0')
-        {
-            return true;
-        }
-        else return false;
-
-    }
-}
-
-
-
-
-
-
-
-// task 2 
- int calculatingParity(string input)
-{
-    int count = 0;
-    for (int i = 0; i < input.size(); i++)
-    {
-        if (input[i] == '1')
-        {
-            count++;
-        }
-
-
-    }
-    return count % 2 == 0 ? 0 : 1;
-}
-
-
-void parityAdding(vector<string>& matrix)
-{
-    for (int i = 0; i < matrix.size(); i++)
-    {
-        int paritybit = calculatingParity(matrix[i]);
-        matrix[i] += to_string(paritybit);
-    }
-    string columnParity;
-    for (int j = 0; j < matrix[0].size(); j++)
-    {
-        string columnsvalue;
-        for (int i = 0; i < matrix.size(); i++)
-        {
-            columnsvalue += matrix[i][j];
-        }
-        int parityBit = calculatingParity(columnsvalue);
-        columnParity += to_string(parityBit);
-    }
-    matrix.push_back(columnParity);
-}
-void printMatrix(vector<string>& matrix)
-{
-    cout << " ------------------------------------------------2d even parity bit ";
     cout << endl;
-    cout << "--------------------------------------------" << endl;
-    for (int i = 0; i < matrix.size(); i++)
-    {
-
-            for (int j = 0; j < matrix[i].size(); j++)
-            {
-                cout << matrix[i][j] << "  ";
-            }
-            cout << endl;
-        
-    }
-    cout << "--------------------------------------------" << endl;
-}
-
-void evenParityBit2DMatrix() {
-    vector<string> matrix;
-    int rows;
-    int cols;
-    cout << " enter the number of rows";
-    cin >> rows;
-    cout << "enter the number of columns";
-    cin >> cols;
-
-    for (int i = 0; i < rows; i++)
-    {
-        cout << " enter the row " << i << endl;
-        string row;
-        cin >> row;
-        if (!(binarychecker(row)))
+    string upperLine = "|";
+    cout << "|";
+    string signallLine;
+    for (int i = 0; i < binaryData.length(); i++) {
+        if (binaryData[i] == '1')
         {
-            return;
+            signallLine += "___";
         }
-        if (row.size() != cols)
+        else if (binaryData[i] == '0')
         {
-            cout << " kindly error correct amount of entries in col  " << endl;
-            return;
+            signallLine += "   ";
         }
-        matrix.push_back(row);
     }
 
-    parityAdding(matrix);
 
-    cout << "Bits to be transmitted (with even parity bits):" << endl;
-    printMatrix(matrix);
-}
-
-
-
-
-
-
-
-
-
-//task2 b part 
-void twoDErrordedection()
-{
-    cout << endl;
-    cout << " -------------------------------------------error decdection using 2 d ---------------------------";
-    cout << endl;
-    int r;
-    int c;
-    cout << " enter  number of rows";
-    cin >> r;
-    cout << " enter number of cols";
-    cin >> c;
-    vector<string> matrix;
-    for (int i = 0; i < r; i++)
+    for (int i = 0; i < signallLine.length(); i++)
     {
-        cout << " enter the row " << i << endl;
-        string row;
-        cin >> row;
-        if (!(binarychecker(row)))
+        if (signallLine[i] == '_' && signallLine[i + 1] == ' ')
         {
-            return;
+            upperLine += "|";
         }
-        if (row.size() != c)
+        else if (signallLine[i] == ' ' && signallLine[i + 1] == '_')
         {
-            cout << " kindly error correct amount of entries in col  " << endl;
-            return;
-        }
-        matrix.push_back(row);
-    }
-    vector<int> rows;
-    vector<int> cols;
-    for (int i = 0; i < matrix.size()-1; i++)
-    {
-        int count = 0;
-        for (int j = 0; j < matrix[i].size()-1; j++)
-        {
-            if (matrix[i][j] == '1')
-            {
-                count++;
-            }
-        }
-        if (count % 2 == 0 && matrix[i][matrix[i].size()-1] == '0')
-        {
-
-        }
-        else if (count % 2 != 0 && matrix[i][matrix[i].size() - 1] == '1')
-        {
-
+            upperLine += "|";
         }
         else
         {
-            rows.push_back(i);
+            upperLine += "_";
+        }
+
+    }
+    cout << signallLine << endl;
+    cout << upperLine + "----->time axis" << "\n|\n|\n";
+    cout << endl;
+    cout << " -------------------------------------------------------------";
+}
+void NRZ_L(string binaryData)
+{
+    cout << " -------------------------------------------------------------";
+    cout << endl;
+    for (int i = 0; i < binaryData.length(); i++)
+    {
+        cout << " " << binaryData[i] << " ";
+    }
+    cout << endl;
+    string s;
+    cout << "|";
+    for (int i = 0; i < binaryData.length(); i++)
+    {
+        if (binaryData[i] == '0')
+        {
+            s += "___";
+
+        }
+        else if (binaryData[i] == '1')
+        {
+            s += "   ";
+        }
+    }
+    cout << s;
+    cout << endl;
+    string downString;
+    string upString = "|";
+    for (int i = 0; i < s.length(); i++)
+    {
+        if (s[i] == '_' && s[i + 1] == ' ')
+        {
+            upString += "|";
+        }
+        else if (s[i] == ' ' && s[i + 1] == '_')
+        {
+            upString += "|";
+        }
+        else {
+            upString += "_";
         }
     }
 
-
-    vector<string> colMAtrix;
-    string columnParity;
-    for (int j = 0; j < matrix[0].size() - 1; j++)
+    cout << upString + "------> time axis" << endl;
+    for (int i = 0; i < binaryData.length(); i++)
     {
-        string columnsvalue;
-        for (int i = 0; i < matrix.size(); i++)
+        if (binaryData[i] == '1')
         {
-            columnsvalue += matrix[i][j];
-        }
+            downString += "___";
 
-        colMAtrix.push_back(columnsvalue);
+        }
+        else if (binaryData[i] == '0')
+        {
+            downString += "   ";
+
+        }
+    }
+    for (int i = 0; i < downString.length(); i++)
+    {
+        if (downString[i] == ' ' && downString[i + 1] == '_')
+        {
+            downString[i + 1] = '|';
+        }
+        else if (downString[i] == '_' && downString[i + 1] == ' ')
+        {
+            downString[i + 1] = '|';
+        }
+    }
+    cout << downString;
+    cout << endl;
+    cout << endl;
+    cout << " -------------------------------------------------------------";
+}
+void Manchester(string binaryData)
+{
+
+    cout << " -------------------------------------------------------------";
+    cout << endl;
+    for (int i = 0; i < binaryData.length(); i++)
+    {
+        cout << "  " << binaryData[i] << "  ";
+    }
+    cout << endl;
+    string upSignal, downSignal;
+    //cout<<"|";
+    for (int i = 0; i < binaryData.length(); i++)
+    {
+        if (binaryData[i] == '0')
+        {
+            upSignal += "__   ";
+            downSignal += "  |__";
+        }
+        else {
+            upSignal += "   __";
+            downSignal += "__|  ";
+
+        }
     }
 
-    for (int i = 0; i < colMAtrix.size(); i++)
+    string l = "_________________________________________________---->timeaxis";
+    for (int i = 0; i < upSignal.length(); i++)
     {
-        int count = 0;
-        for (int j = 0; j < colMAtrix[i].size() - 1; j++)
+        if (upSignal[i] == '_' && upSignal[i + 1] == ' ')
         {
-            if (colMAtrix[i][j] == '1')
+            l[i + 1] = '|';
+        }
+        else if (upSignal[i] == ' ' && upSignal[i + 1] == '_')
+        {
+            l[i] = '|';
+        }
+
+    }
+    for (int i = 0; i < downSignal.length(); i++)
+    {
+        if (downSignal[i] == '_' && downSignal[i + 1] == ' ')
+        {
+            downSignal[i] = '|';
+        }
+        else if (downSignal[i] == ' ' && downSignal[i + 1] == '_')
+        {
+            downSignal[i + 1] = '|';
+        }
+    }
+    cout << upSignal << endl;
+    cout << l << endl;
+    cout << downSignal;
+    cout << endl;
+    cout << endl;
+    cout << " -------------------------------------------------------------";
+}
+void DifferentialManchester(string b)
+{
+    cout << " -------------------------------------------------------------";
+    cout << endl;
+    for (int i = 0; i < b.length(); i++)
+    {
+        cout << "  " << b[i] << "  ";
+    }
+    cout << endl;
+    bool flag = true;
+    string up, down, l = "_____________________________________________________________";
+    for (int i = 0; i < b.length(); i++)
+    {
+        if (i == 0 && b[i] == '0')
+        {
+            up += "   __";
+            down += "__|  ";
+
+        }
+        if (b[i] == '0' && i != 0)
+        {
+            if (flag == false)
             {
-                count++;
+                up += "   __";
+                down += "__|  ";
+            }
+            if (flag == true)
+            {
+                up += "__   ";
+                down += "  |__";
+            }
+
+        }
+        else if (b[i] == '1')
+        {
+            if (flag == true)
+            {
+                if (i == 1)
+                {
+                    up += "__   ";
+                    down += "  |__";
+
+                }
+                else {
+                    up += "   __";
+                    down += "__|  ";
+                    flag = false;
+                }
+
+            }
+            else {
+                up += "__   ";
+                down += "  |__";
+                flag = true;
             }
         }
-        if (count % 2 == 0 && colMAtrix[i][colMAtrix[i].size() - 1] == '0')
-        {
-
-        }
-        else if (count % 2 != 0 && colMAtrix[i][colMAtrix[i].size() - 1] == '1')
-        {
-
-        }
-        else
-        {
-            cols.push_back(i);
-        }
     }
-
-
-    cout << "--------------------------------------------" << endl;
-
-    for (int i = 0; i < rows.size(); i++)
+    for (int i = 0; i < up.length(); i++)
     {
-        for (int j = 0; j < cols.size(); j++)
+        if (up[i] == '_' && up[i + 1] == ' ')
         {
-            cout << " bit position which contains errors are  : " << rows[i] << cols[j];
-            cout << endl;
+            l[i + 1] = '|';
+        }
+        else if (up[i] == ' ' && up[i + 1] == '_')
+        {
+            l[i] = '|';
+        }
+    }
+    int dl = down.length();
+    for (int i = 0; i < dl; i++)
+    {
+        if (down[i] == '_' && down[i + 1] == ' ')
+        {
+            down[i] = '|';
+        }
+        else if (down[i] == ' ' && down[i + 1] == '_')
+        {
+            down[i + 1] = '|';
+
+        }
+    }
+
+    cout << up << endl;
+    cout << l << "---->time axis" << endl;
+    cout << down;
+}
+void AMI(string binaryData)
+{
+    cout << " -------------------------------------------------------------";
+    cout << endl;
+    for (int i = 0; i < binaryData.length(); i++)
+    {
+        cout << " " << binaryData[i] << " ";
+    }
+    cout << endl;
+    string upSignal, downSignal;
+
+    bool flag = true;
+    for (int i = 0; i < binaryData.length(); i++)
+    {
+        if (binaryData[i] == '1')
+        {
+            if (flag == true)
+            {
+                upSignal += "___";
+                flag = false;
+                downSignal += "   ";
+            }
+            else {
+                downSignal += "|__|";
+                upSignal += "   ";
+                flag = true;
+            }
+
+        }
+        else if (binaryData[i] == '0') {
+            upSignal += "   ";
+            downSignal += "   ";
         }
 
     }
-    cout << "--------------------------------------------" << endl;
+    string midZone = "________________________________---->time axis";
+    for (int i = 0; i < upSignal.length(); i++)
+    {
+        if (upSignal[i] == '_' && upSignal[i + 1] == ' ')
+        {
+            midZone[i] = '|';
+        }
+
+        else if (upSignal[i] == ' ' && upSignal[i + 1] == '_')
+        {
+            midZone[i] = '|';
+        }
+    }
+    cout << upSignal << endl;
+    cout << midZone << endl;
+    cout << downSignal;
+    cout << endl;
+    cout << endl;
+    cout << " -------------------------------------------------------------";
 
 }
-// task 3 
-
-
-string hammingencoding(string input)
+void  Pseudoternary(string binaryData)
 {
+    cout << " -------------------------------------------------------------";
     cout << endl;
-    cout << " --------------------hamming encoding ---------------------------------";
-    cout << endl;
-    int r = 1;
-    while (pow(2, r) < input.size() + r + 1)
+    for (int i = 0; i < binaryData.length(); i++)
     {
-        r++;
+        cout << " " << binaryData[i] << " ";
+    }
+    cout << endl;
+    string upSignal, downSignal;
+
+    bool flag = true;
+    for (int i = 0; i < binaryData.length(); i++)
+    {
+        if (binaryData[i] == '0')
+        {
+            if (flag == true)
+            {
+                upSignal += "___";
+                flag = false;
+                downSignal += "   ";
+            }
+            else {
+                downSignal += "|_|";
+                upSignal += "   ";
+                flag = true;
+            }
+
+        }
+        else if (binaryData[i] == '1') {
+            upSignal += "   ";
+            downSignal += "   ";
+        }
+
+    }
+    string midZone = "________________________________--->time axis";
+    for (int i = 0; i < upSignal.length(); i++)
+    {
+        if (upSignal[i] == '_' && upSignal[i + 1] == ' ')
+        {
+            midZone[i] = '|';
+        }
+
+        else if (upSignal[i] == ' ' && upSignal[i + 1] == '_')
+        {
+            midZone[i] = '|';
+        }
     }
 
-    string ans(input.size() + r, ' ');
+    cout << upSignal << endl;
+    cout << midZone << endl;
+    cout << downSignal;
+    cout << endl;
+    cout << endl;
+    cout << " -------------------------------------------------------------";
+}
+void TwoBOneQ_Encoding(string binary)
+{
 
-    int j = 0;
-    for (int i = 0; i < input.size() + r; i++)
+    cout << " -------------------------------------------------------------";
+    cout << endl;
+    if (binary.length() % 2 != 0)
+        binary += "0";
+    int len = binary.length();
+    int rows = 7, cols = 10 + 3 * len;
+    vector<vector<char>> graph(rows, vector<char>(cols, ' '));
+
+    graph[0][0] = '^';
+    int j = 4;
+
+    for (int i = 0; i < len; i++)
     {
-        if ((i + 1) & ((i + 1) - 1))
+        graph[0][j] = binary[i];
+        graph[0][++j] = binary[++i];
+        j = j + 3;
+    }
+
+
+    graph[4][0] = graph[1][0] = graph[2][0] = graph[3][0] = graph[5][0] = graph[6][0] =
+        graph[4][2] = graph[1][2] = graph[2][2] = graph[3][2] = graph[5][2] = graph[6][2] = '|';
+
+
+    for (int j = 3; j < cols; j++)
+        graph[3][j] = '_';
+
+    j = 3;
+    int previousRow, currentRow;
+    for (int i = 0; i < len; i += 2)
+    {
+        if (binary[i] == '0' && binary[i + 1] == '0')
+            currentRow = 5;
+        else if (binary[i] == '0' && binary[i + 1] == '1')
+            currentRow = 4;
+        else if (binary[i] == '1' && binary[i + 1] == '1')
+            currentRow = 2;
+        else
+            currentRow = 1;
+
+        if (i > 1)
         {
-            ans[i] = input[j];
+
+            if (binary[i - 2] != binary[i] || binary[i - 1] != binary[i + 1])
+            {
+                if (currentRow > previousRow)
+                {
+                    for (int k = currentRow; k > previousRow; k--)
+                        graph[k][j] = '|';
+                }
+                else
+                    for (int k = previousRow; k > currentRow; k--)
+                        graph[k][j] = '|';
+            }
             j++;
         }
+
+        graph[currentRow][j++] = graph[currentRow][j++] = graph[currentRow][j++] = '_';
+        previousRow = currentRow;
     }
 
-
-    cout << " the value of rundant bits are " << r << endl;
-
-
-    for (int i = 0; i < r; i++)
+    j = j + 3;
+    graph[1][j] = graph[2][j] = graph[4][j] = graph[5][j] = '_';
+    j++;
+    graph[1][j] = graph[2][j] = graph[4][j] = graph[5][j] = '_';
+    j++;
+    graph[1][j] = graph[2][j] = graph[4][j] = graph[5][j] = '_';
+    j++;
+    graph[1][j] = graph[2][j] = graph[4][j] = graph[5][j] = '_';
+    j += 2;
+    graph[1][j] = '+'; graph[2][j] = '+'; graph[4][j] = '-'; graph[5][j] = '-';
+    j++;
+    graph[1][j] = '3'; graph[2][j] = '1';  graph[4][j] = '1'; graph[5][j] = '3';
+    for (int i = 0; i < rows; i++)
     {
-        int p = 0;
-        int index = pow(2, i) - 1;
-        cout << " redundant bits are at position " << index +1<< endl;
-        for (int j = index; j < input.size() + r; j += pow(2, i + 1))
-        {
-        
-            for (int k = j;k< min(j + static_cast<int> (pow(2, i)), static_cast<int>(input.size() + r)); k++)
-            {
-                if (ans[k] == '1')
-                {
-                    p++;
-                }
-            }
+        for (int j = 0; j < cols; j++)
+            cout << graph[i][j];
+        cout << endl;
+    }
+
+    cout << "\n  ---->Time\n\n";
+    cout << endl;
+    cout << endl;
+    cout << " -------------------------------------------------------------";
+}
+bool bin(string binary, int k) {
+    int c = 0;
+    for (int i = 0; i < k; i++) {
+        if (binary[i] == '0') {
+            c++;
         }
-        if (p % 2 == 0)
+    }
+    return c == 0;
+}
+void RZ(string b)
+{
+    cout << " -------------------------------------------------------------";
+    cout << endl;
+    int l = b.length();
+    for (int i = 0; i < l; i++) {
+        if (i == 0)
         {
-            ans[index] = '0';
+            cout << " " << b[i] << "      ";
         }
         else
         {
-            ans[index] = '1';
+            cout << b[i] << "      ";
         }
 
     }
-    return ans;
-}
+    cout << endl;
 
-  
-void hammingErRORDedection(string input)
-{
-    string ans = input;
-    cout << endl << "---------------------------------hamming error finding -----------------------" << endl;
-    int r = 1;
-    while (pow(2, r) < input.size() + r + 1)
-    {
-        r++;
+    string s;
+    cout << "|";
+
+    for (int i = 0; i < l; i++) {
+        if (b[i] == '0') {
+            s += "       ";
+        }
+        else if (b[i] == '1') {
+            s += "___    ";
+        }
     }
-    int error = 0;
-    for (int i = 0; i < r; i++)
-    {
-        int index = pow(2, i) - 1;
-        int p = 0;
-        for (int j = index; j < input.length(); j += pow(2, i + 1))
-        {
-            for (int k = j; k < min(j + static_cast<int> (pow(2, i)), static_cast<int>(input.size())); k++)
-            {
-                if (input[k] == '1')
-                {
-                    p++;
-                }
+
+    cout << s << endl;
+
+    string down = "|";
+    string up = "|";
+    int sl = s.length();
+    for (int i = 0; i < sl; i++) {
+        if (s[i] == '_' && s[i + 1] == ' ') {
+            up += '|';
+        }
+        else if (s[i] == ' ' && s[i + 1] == '_') {
+            up += '|';
+        }
+        else {
+            up += '_';
+        }
+
+        if (i == sl - 1) {
+            up += "_____________";
+        }
+    }
+
+    cout << up << endl;
+
+    for (int i = 0; i < l; i++) {
+        if (b[i] == '0') {
+            if (i == 0 || bin(b, i)) {
+                down += "___|   ";
             }
-        }
-
-
-        if (p % 2 != 0)
-        {
-            error += index + 1;
-        }
-    }
-
-    if (error == 0)
-    {
-        cout << "--------------------------------------------" << endl;
-        cout << " no error dedected"<< endl;
-        cout << "--------------------------------------------" << endl;
-
-    }
-    else
-    {
-        if (ans[error] == '1')
-        {
-            ans[error] = '0';
-        }
-        else
-        {
-            ans[error] = '1';
-        }
-        cout << "--------------------------------------------" << endl;
-        cout << " error dedected at bit " << error << endl;
-        cout << " the corrext msg is " << ans << endl;
-        cout << "--------------------------------------------" << endl;
-    }
-
-}
-
-
-
-//task 4
-void crc(string input, string divior) 
-{
-    cout << endl << " -----------------------------CRC --------------------------" << endl;
-    string crc = "";
-    string msg = input;
-    msg.append(divior.length() - 1, '0');
-    for (int i = 0; i <= msg.size() - divior.size(); i++)
-    {
-        if (msg[i] == '1')
-        {
-            for (int j = 0; j < divior.length(); j++)
-            {
-                if (msg[i + j] == divior[j])
+            else {
+                if (b[i - 1] == '0')
                 {
-                    msg[i + j] = '0';
+                    down += "|___   ";
+                }
+                else if (b[i - 1] == '1' && b[i - 2] == '1')
+                {
+                    down += " |___   ";
                 }
                 else
                 {
-                    msg[i + j] = '1';
+                    down += "|___   ";
                 }
+
             }
         }
+        else if (b[i] == '1') {
+            down += "      ";
+        }
     }
-    cout <<endl << " --------------------------------------------------------------------------" << endl;
+    int dl = down.length();
+    for (int i = 0; i < dl; i++) {
+        if (down[i] == ' ' && down[i + 1] == '_') {
+            down[i] = '|';
+        }
+        else if (down[i] == '_' && down[i + 1] == ' ') {
+            down[i + 1] = '|';
+        }
+    }
 
-    crc = msg.substr(msg.length() - (divior.length() - 1));
-    
-    cout << " crc is : "<<crc;
-    cout << " msg after adding crc is " << input + crc;
-    cout << endl << " --------------------------------------------------------------------------" << endl;
-
+    down += "\n|";
+    cout << down << endl;
+    cout << endl;
+    cout << endl;
+    cout << " -------------------------------------------------------------";
 }
-
-void crcErrorDedection(string input, string divisor)
+void NRZ_I(string b)
 {
-    cout << endl << " -----------------------------CRC error dedection--------------------------" << endl;
-    string remainder = input;
-    for (int i = 0; i < input.size() - (divisor.size() - 1); i++)
+    cout << " -------------------------------------------------------------";
+    cout << endl;
+
+    string l = "|_";
+    string up;
+    string down = "|";
+    int lb = b.length();
+    for (int i = 0; i < lb; i++)
     {
-        if (remainder[i] == '1')
+        cout << " " << b[i] << " ";
+    }
+    cout << endl;
+    cout << "|";
+    bool flag = false;
+    int i;
+
+
+    if (b[0] == '0')
+    {
+        flag = false;
+    }
+    else
+    {
+        flag = true;
+    }
+    for (i = 0; i < lb; i)
+    {
+        if (flag == false)
         {
-            for (int j = 0; j < divisor.size(); j++)
+            up += "___";
+            down += "   ";
+            while (b[i] == '1')
             {
-                if ((remainder[i + j] == divisor[j]))
+                if (b[i + 1] == '1')
                 {
-                    remainder[i + j] = '0';
+                    break;
                 }
-                else
+                down += "   ";
+                up += "___";
+                i++;
+
+            }
+            while (b[i] == '0')
+            {
+                if (b[i + 1] == '1')
                 {
-                    remainder[i + j] = '1';
+                    break;
                 }
+                down += "   ";
+                up += "___";
+                i++;
+            }
+            i++;
+            if (flag == true)
+            {
+                flag = false;
+            }
+            else
+            {
+                flag = true;
+            }
+        }
+        else {
+            up += "   ";
+            down += "___";
+            if (flag == true)
+            {
+                flag = false;
+            }
+            else
+            {
+                flag = true;
+            }
+            i++;
+            while (b[i] == '0')
+            {
+                down += "___";
+                up += "   ";
+                i++;
             }
         }
     }
-    int flag = 0;
-    for (int i = 0; i < remainder.size(); i++)
+
+    for (int i = 0; i < up.length(); i++)
     {
-        if (remainder[i] != '0')
+        if (up[i] == '_' && up[i + 1] == ' ')
         {
-            flag = 1;
+            l += "|";
+        }
+        else if (up[i] == ' ' && up[i + 1] == '_')
+        {
+            l += "|";
+        }
+        else {
+            l += "_";
         }
     }
-    if (flag == 0)
+    for (int i = 0; i < down.length(); i++)
     {
-        cout << "--------------------------------------------" << endl;
-        cout << " no error dedected" << endl;
-        cout << "--------------------------------------------" << endl;
-
-
-    }
-    else
-    {
-        cout << "--------------------------------------------" << endl;
-        cout << "  error detedectd"<<endl;
-        cout << "--------------------------------------------" << endl;
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// task 5 
-string binaryAdd(string a, string b)
-{
-    string ans;
-    int i = a.size() - 1;
-    int j = b.size() - 1;
-    int carry = 0;
-    while (i >= 0 || j >= 0 || carry)
-    {
-        int sum = carry;
-        if (i >= 0)
+        if (down[i] == ' ' && down[i + 1] == '_')
         {
-            sum += a[i] - '0';
-            i--;
-
+            down[i + 1] = '|';
         }
-        if (j >= 0)
+        else if (down[i] == '_' && down[i + 1] == ' ')
         {
-            sum += b[j] - '0';
-            j--;
-        }
-        carry = sum / 2;
-        ans += (sum % 2) + '0';
-
-    }
-    reverse(ans.begin(), ans.end());
-    return ans;
-}
-void CHecksumError(string input)
-{
-    cout << endl << " ----------------------------CHECK SUM error dedection-------------------------" << endl;
-    vector<string> chunk;
-    for (int i = 0; i < input.size(); i += 8)
-    {
-        chunk.push_back(input.substr(i, 8));
-    }
-    string ans = "00000000";
-    for (int i = 0; i < chunk.size(); i++)
-    {
-        ans = binaryAdd(ans, chunk[i]);
-    }
-
-    while (ans.size() > 8)
-    {
-        string leftBits = ans.substr(ans.size() - 8, 8);
-        string rightBits = ans.substr(0, ans.size() - 8);
-        ans = binaryAdd(leftBits, rightBits);
-
-    }
-
-    for (int i = 0; i < ans.size(); i++)
-    {
-        if (ans[i] == '0')
-        {
-            ans[i] = '1';
-        }
-        else
-        {
-            ans[i] = '0';
+            down[i + 1] = '|';
         }
     }
-    int falg = 0;
-    for (int i = 0; i < ans.size(); i++)
-    {
-        if (ans[i] != '0')
-        {
-            falg = 1;
-            break;
-        }
-    }
-    if (falg == 1)
-    {
-        cout << endl;
-        cout << "--------------------------------------------" << endl;
-        cout << " error  detected ";
-        cout << endl<<"--------------------------------------------" << endl;
-    }
-    else
-    {
-        cout << endl;
-        cout << "--------------------------------------------" << endl;
-        cout << " no error detected  ";
-        cout << endl<<"--------------------------------------------" << endl;
-    }
-}
-
-void checksum(string input)
-{
-    cout << endl << " ----------------------------CHECK SUM error encoding-------------------------" << endl;
-    int remainder = 0;
-    int zero;
-    if (input.size() % 8 != 0)
-    {
-        remainder = input.size() % 8;
-        zero = 8 - remainder;
-        string zeros;
-        for (int i = 0; i < zero; i++)
-        {
-            zeros += '0';
-        }
-        string newinput = zeros + input;
-        input = newinput;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    }
-
-
-    vector<string> chunk;
-    for (int i = 0; i < input.size(); i += 8)
-    {
-        chunk.push_back(input.substr(i, 8));
-    }
-    string ans = "00000000";
-    for (int i = 0; i < chunk.size(); i++)
-    {
-        ans = binaryAdd(ans, chunk[i]);
-    }
-
-    while (ans.size() > 8)
-    {
-        string leftBits = ans.substr(ans.size() - 8, 8);
-        string rightBits = ans.substr(0, ans.size() - 8);
-        ans = binaryAdd(leftBits, rightBits);
-
-    }
-
-    for (int i = 0; i < ans.size(); i++)
-    {
-        if (ans[i] == '0')
-        {
-            ans[i] = '1';
-        }
-        else
-        {
-            ans[i] = '0';
-        }
-    }
+    cout << up << endl;
+    cout << l << "----->time axis" << endl;
+    cout << down;
     cout << endl;
-    cout << "--------------------------------------------" << endl;
-    cout << "check sum is : " << ans;
     cout << endl;
-    cout << " the msg after adding checksum is " << input + ans;
-    cout << endl<<"--------------------------------------------" << endl;
-    cout << endl;
-
-    
+    cout << " -------------------------------------------------------------";
 }
-
-
 int main()
 {
-	int choice;
-	do {
-        cout << endl;
-		cout << " enter your choice ";
-		cout << endl;
-		cout << " enter 0 to   exit ";
-		cout << endl;
-		cout << " enter 1 for  task1 parity bit ";
-		cout << endl;
-		cout << " enter 2 for  task2 2d parity bit ";
-		cout << endl;
-		cout << " enter 3 for  task3 hamming error detection  ";
-		cout << endl;
-		cout << " enter 4 for  task4 CRC  ";
-		cout << endl;
-		cout << " enter 5 for  task5 checkSum ";
-		cout << endl;
-		cin >> choice;
-		if (choice == 1)
-		{
-            string input;
-            cout << " enter input in binary : ";
-            cin >> input;
-            if (!(binarychecker(input)))
-            {
-                cout << "  only binary numbers are executed ";
-                cout << endl;
+    int userchoice;
+    string binary;
 
-            }
-            else
+    do {
+        do {
+
+            cout << " enter binary  :";
+            cin >> binary;
+            bool validbinary = true;
+
+            for (int i = 0; i < binary.length(); i++)
             {
-                cout << " press 1 if u wanna  use even bit parity  and 2 for odd parity " << endl;
-                int parity;
-                cin >> parity;
-                if (oneBiterrorUisngParityBit(input, parity))
+                if (binary[i] != '0' && binary[i] != '1')
                 {
-                    cout << "--------------------------------------------" << endl;
-                    cout << " no error " << endl;
-                    cout << "--------------------------------------------" << endl;
+                    validbinary = false;
+                    break;
                 }
-                else
-                {
-                    cout << "--------------------------------------------" << endl;
-                    cout << " error detected" << endl;
-                    cout << "--------------------------------------------" << endl;
-                }
-            }
-           
 
-		}
-		else if (choice == 2)
-		{
-            int choiceuser;
-            cout << " enter your choice press 1 for  part  2d bit encoding and 2 for  error dededction";
-            cin >> choiceuser;
-            if (choiceuser == 1)
-            {
-                cout << endl;
-                evenParityBit2DMatrix();
-                cout << endl;
             }
-            else if ( choiceuser==2)
+            if (validbinary)
             {
-                cout << endl;
-              
-                twoDErrordedection();
-       
-               
+                break;
             }
-            else
-            {
 
-                cout << endl;
-              
-                cout << " no such a choice exsist";
-               
-                cout << endl;
-            }
-        
-         
-		}
-		else if (choice == 3)
-		{
+
+        } while (true);
+        do {
+
+            cout << " enter your choice ";
             cout << endl;
-            cout << " which part u wanna execute  press 1 for  hamming ecnoding  nd 2 for  hamming error dedection ";
+            cout << " 0 for exit";
             cout << endl;
-            int c = 0;
-            cin >> c;
-            
-            string input;
+            cout << " 1 NRZ";
+            cout << endl;
+            cout << " 2 NRZ-L";
+            cout << endl;
+            cout << " 3 NRZ-I";
+            cout << endl;
+            cout << " 4 RZ";
+            cout << endl;
+            cout << " 5 MANCHESTAR";
+            cout << endl;
+            cout << " 6  Differential Manchester";
+            cout << endl;
+            cout << " 7 AMI";
+            cout << endl;
+            cout << " 8  Pseudoternary";
+            cout << endl;
+            cout << " 9 2B1Q";
+            cout << endl;
 
-            cout<<" enter input ";
-            cin >> input;
-            string ans;
-            if (binarychecker(input))
-            {
-
-                if (c == 1)
-                {
-                    cout << endl;
-                    cout << "--------------------------------------------" << endl;
-                     ans=hammingencoding(input);
-                     cout <<"  bits to be transmitted after adding  rundant bits " << ans;
-                     cout << endl;
-                     cout << "--------------------------------------------" << endl;
-                  
-                    
-                }
-                else if (c == 2)
-                {
-                    cout << endl;
-                    cout << endl;
-                    cout << "--------------------------------------------" << endl;
-                    hammingErRORDedection(input);
-                    cout << endl;
-                    cout << "--------------------------------------------" << endl;
-                    cout << endl;
-                }
-                else
-                {
-                    cout << " no such chooise exsits";
-                }
-
-            }
-            else
-            {
-                cout << " only binary values are exxecuted";
-            }
-
-           
-		}
-		else if (choice == 4)
-		{
-            string input;
-            cout << " enter message ";
-            cin >> input;
-            cout << " enter divisor";
-            string div;
-            cin >> div;
-
-
-            int userchoice;
-            cout << " press 1 for crcc encoding  and 2 for error dedection";
             cin >> userchoice;
 
-            if (binarychecker(input))
-            {
+        } while (userchoice < 0 && userchoice >9);
 
-                if (userchoice == 1)
-                {
-                    crc(input, div);
-                }
-                else if (userchoice == 2)
-                {
-                    cout << endl;
-                    cout << "--------------------------------------------" << endl;
-                    crcErrorDedection(input, div);
-                    cout << endl;
-                    cout << "--------------------------------------------" << endl;
-                    
-                }
-                else
-                {
-                    cout << " no such a choice exsists";
-                }
+        if (userchoice == 1)
+        {
+            NRZ(binary);
+        }
+        else if (userchoice == 2)
+        {
+            NRZ_L(binary);
+        }
+        else if (userchoice == 3)
+        {
+            NRZ_I(binary);
 
-            }
-            else
-            {
-                cout << " only binary values are executed";
-            }
+        }
+        else if (userchoice == 4)
+        {
 
-		}
-		else if (choice == 5)
-		{
-            cout << " which part u wanna execute  press 1 for  check sum calculation  nd 2 for  check sum error dedection ";
-            int c = 0;
-            cin >> c;
-            string input;
-            cout << " enter input in binary : ";
-            cin >> input;
-            if (!(binarychecker(input)))
-            {
+            RZ(binary);
 
-                cout << "  only binary numbers are executed ";
-                cout << endl;
+        }
+        else if (userchoice == 5)
+        {
+            Manchester(binary);
+        }
+        else if (userchoice == 6)
+        {
+            DifferentialManchester(binary);
+        }
+        else if (userchoice == 7)
+        {
+            AMI(binary);
 
-            }
-            else
-            {
-                if(c==1)
-                checksum(input);
-                else if (c==2)
-                {
-                    CHecksumError(input);
-                }
-                else
-                {
-                    cout << " no such a chooice exsist";
-                }
-            }
-		}
-		else
-		{
-			cout << " kindly enter   valid choice";
-		}
-	} while (choice != 0);
+        }
+        else if (userchoice == 8)
+        {
+            Pseudoternary(binary);
+        }
+        else if (userchoice == 9)
+        {
+            TwoBOneQ_Encoding(binary);
+
+        }
+        cout << endl;
+
+    } while (userchoice != 0);
+
+
+
 }
